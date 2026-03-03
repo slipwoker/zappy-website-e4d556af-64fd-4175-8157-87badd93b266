@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>פרויקטי בטון מוצלחים שביצענו ברחבי הארץ — עמי-רן בטון</title>
+    <meta name="description" content="צפו בתיק העבודות המרשים שלנו: פרויקטי בנייה מסחריים, מגורים ותשתיות. ניסיון של שנים באספקת בטון לקבלנים מובילים. לפרטים והצעת מחיר!">
+    <meta name="keywords" content="פרויקטי בטון, עמי רן בטון, תיק עבודות בטון, אספקת בטון לקבלנים, פרויקטים מוצלחים">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'e4d556af-64fd-4175-8157-87badd93b266',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="פרויקטי בטון מוצלחים שביצענו ברחבי הארץ — עמי-רן בטון">
+  <meta property="og:description" content="צפו בתיק העבודות המרשים שלנו: פרויקטי בנייה מסחריים, מגורים ותשתיות. ניסיון של שנים באספקת בטון לקבלנים מובילים. לפרטים והצעת מחיר!">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="פרויקטי בטון מוצלחים שביצענו ברחבי הארץ — עמי-רן בטון">
+  <meta name="twitter:description" content="צפו בתיק העבודות המרשים שלנו: פרויקטי בנייה מסחריים, מגורים ותשתיות. ניסיון של שנים באספקת בטון לקבלנים מובילים. לפרטים והצעת מחיר!">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewbox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewbox="0 0 24 24" fill="none" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/logo.webp" alt="עמי-רן בטון" class="logo">
+      </a>
+    </div>
+    
+    <ul class="nav-menu" id="navMenu"><li><a href="/solutions">פתרונות בטון</a></li><li><a href="/projects">פרויקטים</a></li></ul>
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+  
+  <main>
+    <section class="projects-portfolio-intro-section" data-layout-spec="פרויקטים-portfolio-intro">
+  <div class="projects-portfolio-intro-container">
+    <div class="projects-portfolio-intro-text-block">
+      <h1 class="projects-portfolio-intro-title">פרויקטים שמדברים בעד עצמם</h1>
+      <h3 class="projects-portfolio-intro-subtitle">מבחר יציקות והצבות המציגות עקביות, פתרונות גישה ואיכות גימור ללא פשרות</h3>
+    </div>
+    <div class="projects-portfolio-intro-image-wrapper">
+      <img data-placeholder="projects-portfolio-intro-image-1" data-context="Wide panoramic documentary photograph of a concrete pouring site for עמי-רן בטון construction company, showing workers in safety gear operating concrete pump truck, fresh concrete being poured into formwork, construction site with rebar framework visible, professional construction photography with natural lighting, high detail showing texture and consistency of concrete mix, Israeli construction site setting" width="1200" height="500" src="/assets/site-projects-portfolio-intro-image-1.webp" alt="פרויקט יציקת בטון של עמי-רן בטון - תיעוד מקצועי של תהליך העבודה">
+    </div>
+  </div>
+  <div class="projects-portfolio-intro-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewbox="0 0 1200 80" preserveaspectratio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 L0,45 Q100,38 200,42 T400,38 Q500,42 600,38 T800,42 Q900,38 1000,42 T1200,45 L1200,80 Z" fill="#F3EDE2"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="projects-showcase-section" data-layout-spec="פרויקטים-showcase">
+  <div class="projects-showcase-container">
+    <h2 class="projects-showcase-title">רגעים מהשטח</h2>
+    <div class="projects-showcase-grid">
+      <!-- Item 1 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-1" data-context="Construction site foundation with steel reinforcement cage ready for concrete pour, Israeli construction site, professional concrete work, עמי-רן בטון branding visible" width="600" height="400" src="/assets/site-projects-showcase-image-1.webp" alt="כלוב זיון מוכן ליציקה">
+        </div>
+        <h3 class="projects-showcase-item-title">כלוב זיון מוכן ליציקה</h3>
+        <p class="projects-showcase-item-text">הכנה מדויקת של זיון היסודות לפני יציקת הבטון, תוך שמירה על סטנדרטים גבוהים של בטיחות ואיכות.</p>
+      </article>
+
+      <!-- Item 2 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-2" data-context="Concrete pump truck setup at construction site, professional equipment, Israeli construction, ready for concrete delivery, עמי-רן בטון" width="600" height="400" src="/assets/site-projects-showcase-image-2.webp" alt="הכנת משאבת בטון">
+        </div>
+        <h3 class="projects-showcase-item-title">הכנת משאבת בטון</h3>
+        <p class="projects-showcase-item-text">ציוד מתקדם ומקצועי מוכן לאספקת בטון ישירות לאתר הבנייה, תוך הבטחת זרימה רציפה ואיכותית.</p>
+      </article>
+
+      <!-- Item 3 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-3" data-context="Concrete slab pour in progress, workers spreading fresh concrete, construction site action, Israeli building project, עמי-רן בטון quality" width="600" height="400" src="/assets/site-projects-showcase-image-3.webp" alt="יציקת רצפת בטון">
+        </div>
+        <h3 class="projects-showcase-item-title">יציקת רצפת בטון</h3>
+        <p class="projects-showcase-item-text">יציקה מבוקרת של רצפת בטון עם פיזור אחיד, המבטיחה משטח חלק ועמידות לאורך שנים.</p>
+      </article>
+
+      <!-- Item 4 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-4" data-context="Construction worker finishing concrete surface with trowel, smooth concrete finish, professional craftsmanship, Israeli construction standards" width="600" height="400" src="/assets/site-projects-showcase-image-4.webp" alt="גימור משטח בטון">
+        </div>
+        <h3 class="projects-showcase-item-title">מעבר גימור</h3>
+        <p class="projects-showcase-item-text">עבודת גימור מקצועית עם כלים מתקדמים ליצירת משטח חלק ואחיד, בהתאם לדרישות הפרויקט.</p>
+      </article>
+
+      <!-- Item 5 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-5" data-context="Control joints being cut into fresh concrete slab, expansion joints, professional concrete detailing, Israeli construction site" width="600" height="400" src="/assets/site-projects-showcase-image-5.webp" alt="חיתוך חריצי התפשטות">
+        </div>
+        <h3 class="projects-showcase-item-title">חריצי התפשטות</h3>
+        <p class="projects-showcase-item-text">חיתוך מדויק של חריצי בקרה למניעת סדקים עתידיים ושמירה על שלמות המבנה לאורך זמן.</p>
+      </article>
+
+      <!-- Item 6 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-6" data-context="Concrete curing protection, plastic sheeting covering fresh concrete, moisture retention, professional concrete care, Israeli construction" width="600" height="400" src="/assets/site-projects-showcase-image-6.webp" alt="הגנה על בטון טרי">
+        </div>
+        <h3 class="projects-showcase-item-title">הגנה על תהליך התקשות</h3>
+        <p class="projects-showcase-item-text">כיסוי והגנה על הבטון הטרי לשמירה על תנאי התקשות אופטימליים ומניעת סדקים או פגיעות.</p>
+      </article>
+
+      <!-- Item 7 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-7" data-context="Residential driveway concrete pour, yard concrete work, home construction project, Israeli residential building, עמי-רן בטון" width="600" height="400" src="/assets/site-projects-showcase-image-7.webp" alt="יציקת חניה וחצר">
+        </div>
+        <h3 class="projects-showcase-item-title">יציקת חניה וחצר</h3>
+        <p class="projects-showcase-item-text">ביצוע מקצועי של שטחי בטון למגורים, כולל חניות פרטיות וחצרות, עם דגש על עמידות ואסתטיקה.</p>
+      </article>
+
+      <!-- Item 8 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-8" data-context="Infrastructure pipes and utilities being placed in concrete foundation, construction infrastructure work, Israeli building standards" width="600" height="400" src="/assets/site-projects-showcase-image-8.webp" alt="הנחת תשתיות">
+        </div>
+        <h3 class="projects-showcase-item-title">הנחת תשתיות</h3>
+        <p class="projects-showcase-item-text">תיאום והטמעת תשתיות מים, ביוב וחשמל בתוך מבני הבטון, תוך שמירה על תקנים ודרישות תכנון.</p>
+      </article>
+
+      <!-- Item 9 -->
+      <article class="projects-showcase-item">
+        <div class="projects-showcase-image-wrapper">
+          <img data-placeholder="projects-showcase-image-9" data-context="Formwork removal after concrete curing, construction workers stripping forms, finished concrete structure revealed, Israeli construction" width="600" height="400" src="/assets/site-projects-showcase-image-9.webp" alt="פירוק תבניות">
+        </div>
+        <h3 class="projects-showcase-item-title">פירוק תבניות</h3>
+        <p class="projects-showcase-item-text">הסרה זהירה של תבניות הבטון לאחר התקשות מלאה, חושפת את המבנה המוגמר ומוכן לשלבים הבאים.</p>
+      </article>
+    </div>
+  </div>
+
+  <!-- Bottom Divider: Angled split line (thin to thick) -->
+  <div class="projects-showcase-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewbox="0 0 1200 60" preserveaspectratio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,30 L1200,10 L1200,60 Z" fill="#F3EDE2"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="projects-case-studies-section" data-layout-spec="פרויקטים-case-studies">
+  <div class="projects-case-studies-container">
+    <div class="projects-case-studies-content-column">
+      <h2 class="projects-case-studies-title">סיפורי פרויקטים קצרים</h2>
+      <p class="projects-case-studies-intro">כל פרויקט מציב אתגרים ייחודיים. בעמי-רן בטון אנו מתמחים בפתרונות מותאמים אישית שמשלבים תכנון מדויק, תיאום לוגיסטי ובחירת תערובת אופטימלית. להלן שני מקרי בוחן המדגימים את הגישה המקצועית שלנו.</p>
+      
+      <div class="projects-case-studies-story">
+        <h3 class="projects-case-studies-story-title">מקרה 1: אילוצי גישה ותיאום משאבות</h3>
+        <p class="projects-case-studies-story-text"><strong>האתגר:</strong> פרויקט בנייה רב-קומות במרכז העיר עם רחוב צר ומגבלות חניה קשות. גישה למשאיות בטון רגילות הייתה בלתי אפשרית.<br><br><strong>הפתרון:</strong> תכננו אספקה בשעות לילה מוקדמות עם שימוש במשאבת בטון ארוכה (42 מטר) ממיקום חניה חלופי. בחרנו תערובת בטון C30 עם מעכב התקשות מיוחד שהאריך את זמן העבודה ל-3 שעות.<br><br><strong>תיאום:</strong> סנכרון מלא עם קבלן הראשי, מהנדס הפרויקט וצוות המשאבות. תכנון מדויק של לוח זמנים ליציקת 4 תקרות ברצף.<br><br><strong>התוצאה:</strong> יציקה חלקה ללא עיכובים, חיסכון של 2 ימי עבודה לקבלן, וגימור משטח מושלם ללא צורך בתיקונים.</p>
+      </div>
+      
+      <div class="projects-case-studies-story">
+        <h3 class="projects-case-studies-story-title">מקרה 2: איכות גימור תחת לחץ לוחות זמנים</h3>
+        <p class="projects-case-studies-story-text"><strong>האתגר:</strong> פרויקט מסחרי יוקרתי דרש משטחי בטון חשוף בגימור אדריכלי ברמה גבוהה, עם דדלין צמוד מאוד.<br><br><strong>הפתרון:</strong> המלצנו על תערובת בטון C35 עם תוספי פלסטיפיקציה מתקדמים ואבן גרנית מיוחדת שמבטיחה משטח אחיד וללא בועות אוויר. ליווינו את הקבלן בבחירת תבניות איכותיות ושיטת יציקה אופטימלית.<br><br><strong>תיאום:</strong> אספקה מדויקת בזמן, עם צוות טכני שליווה את היציקה במקום וייעץ לגבי טכניקות רטט וגימור. תכנון של 3 משלוחים ביום אחד עם הפסקות מינימליות.<br><br><strong>התוצאה:</strong> משטח בטון בגימור "פנים בטון" ללא פגמים, עמידה בלוח זמנים הקבלני, ושביעות רצון מלאה של האדריכל והלקוח הסופי. הפרויקט זכה בפרס עיצוב מקומי.</p>
+      </div>
+    </div>
+    
+    <div class="projects-case-studies-imagery-column">
+      <div class="projects-case-studies-image-wrapper projects-case-studies-image-wrapper-1">
+        <img data-placeholder="projects-case-studies-image-1" data-context="Construction site in narrow urban street with concrete pump truck extending long boom to multi-story building, nighttime scene with professional lighting, Israeli city setting, modern construction equipment, עמי-רן בטון concrete delivery" width="600" height="450" src="/assets/site-projects-case-studies-image-1.webp" alt="משאבת בטון ארוכה פועלת ברחוב צר בעיר">
+      </div>
+      
+      <div class="projects-case-studies-image-wrapper projects-case-studies-image-wrapper-2">
+        <img data-placeholder="projects-case-studies-image-2" data-context="High-end commercial building interior with exposed architectural concrete finish, smooth polished concrete surfaces, modern luxury design, professional construction quality, עמי-רן בטון premium concrete work" width="600" height="450" src="/assets/site-projects-case-studies-image-2.webp" alt="בטון חשוף בגימור אדריכלי יוקרתי בפרויקט מסחרי">
+      </div>
+    </div>
+  </div>
+  
+  <div class="projects-case-studies-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewbox="0 0 1200 60" preserveaspectratio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="projects-case-studies-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#F3EDE2;stop-opacity:1"></stop>
+          <stop offset="100%" style="stop-color:#0F7A6A;stop-opacity:1"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0,60 L0,0 L1200,0 L1200,60 Z" fill="#111827"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="projects-reviews-section" data-layout-spec="פרויקטים-reviews">
+  <div class="projects-reviews-container">
+    <div class="projects-reviews-intro">
+      <h2>מה אומרים צוותי הבנייה</h2>
+      <p>שיתופי פעולה עם קבלנים, מנהלי אתרים וצוותי פיתוח ברחבי הארץ. כל פרויקט מתחיל באספקה מדויקת ומסתיים בביצוע מושלם.</p>
+    </div>
+    <div class="projects-reviews-grid">
+      <article class="projects-reviews-card">
+        <h3>קבלן ראשי</h3>
+        <p>"עמי-רן בטון סיפקו לנו בטון איכותי בזמן מדויק לכל שלב של הפרויקט. האמינות שלהם חסכה לנו עיכובים יקרים ושמרה על לוח הזמנים."</p>
+      </article>
+      <article class="projects-reviews-card">
+        <h3>מנהל אתר</h3>
+        <p>"התקשורת עם הצוות מצוינת - תמיד עונים מהר ומתאמים איתנו כל שינוי. הבטון מגיע במצב מושלם והעבודה זורמת בלי הפרעות."</p>
+      </article>
+      <article class="projects-reviews-card">
+        <h3>מנהל עבודה</h3>
+        <p>"עבדנו עם ספקים רבים לאורך השנים, אבל עמי-רן בטון בולטים בעקביות. כל משלוח מגיע בדיוק כמו שהזמנו, והגימור תמיד חלק ואחיד."</p>
+      </article>
+      <article class="projects-reviews-card">
+        <h3>נציג חברת פיתוח</h3>
+        <p>"בפרויקטים גדולים הכל תלוי בתיאום מושלם. עמי-רן בטון מבינים את הלחצים שלנו ותמיד מספקים פתרונות מהירים ואפקטיביים."</p>
+      </article>
+      <article class="projects-reviews-card">
+        <h3>צוות שיפוצים</h3>
+        <p>"גם בפרויקטים קטנים יותר, הם נותנים לנו את אותה רמת שירות גבוהה. הבטון מתאים בדיוק לצרכים שלנו והתוצאה תמיד מקצועית."</p>
+      </article>
+      <article class="projects-reviews-card">
+        <h3>צוות תשתיות</h3>
+        <p>"עבודות תשתית דורשות חוזק ועמידות מקסימליים. הבטון של עמי-רן בטון עומד בכל התקנים ונותן לנו ביטחון מלא בטווח הארוך."</p>
+      </article>
+    </div>
+  </div>
+  <div class="projects-reviews-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewbox="0 0 1200 80" preserveaspectratio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="projects-reviews-highlight" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#F37A1C;stop-opacity:0.3"></stop>
+          <stop offset="50%" style="stop-color:#F37A1C;stop-opacity:0.5"></stop>
+          <stop offset="100%" style="stop-color:#F37A1C;stop-opacity:0.3"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0,80 L0,45 Q30,42 60,48 T120,44 Q150,47 180,42 T240,46 Q270,43 300,48 T360,44 Q390,46 420,43 T480,47 Q510,44 540,48 T600,43 Q630,47 660,44 T720,48 Q750,45 780,43 T840,46 Q870,48 900,44 T960,47 Q990,45 1020,48 T1080,44 Q1110,46 1140,43 T1200,47 L1200,80 Z" fill="#F3EDE2"></path>
+      <line x1="0" y1="46" x2="1200" y2="46" stroke="url(#projects-reviews-highlight)" stroke-width="1.5" opacity="0.6"></line>
+    </svg>
+  </div>
+</section>
+
+<section class="projects-cta-section" data-layout-spec="פרויקטים-cta">
+  <div class="projects-cta-container">
+    <div class="projects-cta-content">
+      <h2 class="projects-cta-heading">יש לכם פרויקט בקרוב?</h2>
+      <p class="projects-cta-text">שתפו אותנו בתאריך היציקה, גישה לאתר ודרישות גימור – נדאג לספק את הבטון המדויק בזמן ובאיכות מושלמת. עמי-רן בטון מתחייבת לשירות מקצועי ואמין לכל פרויקט.</p>
+      <div class="projects-cta-buttons">
+        <a href="contact.html" class="btn-primary">צור קשר</a>
+        <a href="products.html" class="btn-ghost">צפה בפתרונות בטון</a>
+      </div>
+    </div>
+  </div>
+  <svg class="projects-cta-rebar-motif" data-no-icon-edit="true" aria-hidden="true" viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="rebar-grid" x="0" y="0" width="40" height="40" patternunits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="40" stroke="#0F766E" stroke-width="2" opacity="0.3"></line>
+        <line x1="0" y1="0" x2="40" y2="0" stroke="#0F766E" stroke-width="2" opacity="0.3"></line>
+      </pattern>
+    </defs>
+    <rect width="200" height="200" fill="url(#rebar-grid)"></rect>
+    <circle cx="20" cy="20" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="60" cy="20" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="100" cy="20" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="140" cy="20" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="180" cy="20" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="20" cy="60" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="60" cy="60" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="100" cy="60" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="140" cy="60" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="180" cy="60" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="20" cy="100" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="60" cy="100" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="100" cy="100" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="140" cy="100" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="180" cy="100" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="20" cy="140" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="60" cy="140" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="100" cy="140" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="140" cy="140" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="180" cy="140" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="20" cy="180" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="60" cy="180" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="100" cy="180" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="140" cy="180" r="4" fill="#0F766E" opacity="0.5"></circle>
+    <circle cx="180" cy="180" r="4" fill="#0F766E" opacity="0.5"></circle>
+  </svg>
+</section>
+  </main>
+  
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-column company-info">
+        <img src="/assets/logo.webp" alt="עמי-רן בטון" class="logo">
+        <p class="company-description">מובילים בתחום הבטון והחומרים לבנייה. פתרונות איכותיים ומקצועיים לכל פרויקט.</p>
+      </div>
+      
+      <div class="footer-column quick-links">
+        <h3>קישורים מהירים</h3>
+        <ul>
+          <li><a href="/solutions">פתרונות בטון</a></li>
+          <li><a href="/projects">פרויקטים</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column contact-info">
+        <h3>יצירת קשר</h3>
+        <ul>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:[business_email]">[business_email]</a>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <a href="tel:[business_phone]">[business_phone]</a>
+          </li>
+          <li><a href="/"><i class="fas fa-map-marker-alt"></i>
+            <span>[business_address]</span></a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column social-media">
+        <h3>עקבו אחרינו</h3>
+        <div class="social-links">
+          <a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="copyright">
+        <p>© 2026 עמי-רן בטון. All rights reserved.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <span class="separator">|</span>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <span class="separator">|</span>
+        <a href="/accessibility">Accessibility</a>
+        <span class="separator">|</span>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">Generated by Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-navbar-scroll-effect">
+    (function(){var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');var cm=document.querySelector('.zappy-catalog-menu');if(!nb)return;var fb='rgba(17,24,39,0.85)';var th=60;nb.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease,box-shadow 0.3s ease';if(cm)cm.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease';function onS(){var y=window.scrollY||window.pageYOffset;if(y>th){nb.style.background=fb;nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';if(cm){cm.style.background=fb;cm.style.backdropFilter='blur(12px)';cm.style.webkitBackdropFilter='blur(12px)';}}else{nb.style.background='transparent';nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.boxShadow='none';if(cm){cm.style.background='transparent';cm.style.backdropFilter='none';cm.style.webkitBackdropFilter='none';}}}window.addEventListener('scroll',onS,{passive:true});onS();})();
+    </script>
+</body>
+</html>

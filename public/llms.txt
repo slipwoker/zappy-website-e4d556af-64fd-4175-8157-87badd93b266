@@ -1,0 +1,47 @@
+# Business — Generative Engine Optimization Map
+
+---
+
+## Pages
+
+### בית
+https://example.com
+עמי רן בטון מספקת בטון איכותי לקבלנים וחברות בנייה בכל הארץ. שירות מקצועי, אספקה מהירה ומחירים תחרותיים. התקשרו עכשיו לייעוץ חינם!
+
+### פתרונות בטון
+https://example.com/solutions
+גלו את מגוון פתרונות הבטון שלנו: בטון מזוין, בטון דקורטיבי, בטון קל משקל ועוד. התאמה מושלמת לכל פרויקט בנייה. צרו קשר לפרטים נוספים!
+
+### פרויקטים
+https://example.com/projects
+צפו בתיק העבודות המרשים שלנו: פרויקטי בנייה מסחריים, מגורים ותשתיות. ניסיון של שנים באספקת בטון לקבלנים מובילים. לפרטים והצעת מחיר!
+
+### צור קשר
+https://example.com/contact
+צוות המומחים שלנו זמין לשירותכם! צרו קשר לקבלת הצעת מחיר מיוחדת, ייעוץ מקצועי ותיאום אספקת בטון מהירה. שירות אישי ומחויבות למצוינות!
+
+## Legal & Policy
+
+### Privacy Policy
+https://example.com/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://example.com/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://example.com/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+# Business Context (for LLM understanding)
+
+## About Business
+---
+
+# Additional Resources
+
+- **Sitemap**: https://example.com/sitemap.xml
+- **Robots.txt**: https://example.com/robots.txt
